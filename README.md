@@ -3,14 +3,15 @@
 Satu script untuk menjadikan VPS Ubuntu sebagai pintu publik yang **stabil** untuk 9Router —
 menggantikan tunnel gratisan (localhost.run dkk) yang domainnya ganti-ganti.
 
-## Install (copy-paste di VPS Ubuntu)
+## Install
+
+Salin perintah di bawah (klik tombol copy di pojok kanan blok kode), paste di VPS Ubuntu:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zal-m10/9router-vps/main/install.sh -o install.sh \
-  && sudo bash install.sh
+curl -fsSL https://raw.githubusercontent.com/zal-m10/9router-vps/main/install.sh -o install.sh && sudo bash install.sh
 ```
 
-Mode non-interaktif:
+Mode non-interaktif (langsung sebut domain + port):
 
 ```bash
 sudo bash install.sh 9router.namadomain.com 19090
