@@ -54,7 +54,8 @@ Asisten menyambungkan SSH reverse tunnel dari server 9Router, lalu verifikasi
 sudo userdel -r tunnel9r
 sudo rm /etc/nginx/sites-enabled/9router.conf   # atau /etc/nginx/conf.d/9router.conf
 sudo certbot delete --cert-name <domain-kamu>
-sudo systemctl reload nginx sshd
+sudo systemctl reload nginx
+sudo systemctl reload ssh 2>/dev/null || sudo systemctl reload sshd 2>/dev/null || true
 ```
 
 ## Lisensi

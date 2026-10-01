@@ -111,6 +111,10 @@ TUNNEL_USER="tunnel9r"
 # Public key milik server 9Router (boleh disebar, ini BUKAN password)
 PUBKEY='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMT2WA0k+jEP7Fk1LQiD+0NVCjPudNsSZfpQNBFlvmzr 9router-tunnel'
 
+# Deteksi nama service SSH (Ubuntu: ssh.service, RHEL/CentOS: sshd.service)
+SSH_SVC="ssh"
+if systemctl cat sshd.service >/dev/null 2>&1; then SSH_SVC="sshd"; fi
+
 info "Siapkan user SSH khusus tunnel: $TUNNEL_USER ..."
 if ! id "$TUNNEL_USER" >/dev/null 2>&1; then
   useradd -m -s /usr/sbin/nologin "$TUNNEL_USER"
@@ -134,8 +138,11 @@ Match User $TUNNEL_USER
 EOF
 fi
 sshd -t || die "sshd_config tidak valid, periksa manual."
-systemctl reload sshd
-ok "user $TUNNEL_USER siap (tanpa shell, key-only, hanya port-forwarding)."
+if systemctl reload "$SSH_SVC"; then
+  ok "user $TUNNEL_USER siap (tanpa shell, key-only, hanya port-forwarding)."
+else
+  die "Gagal reload $SSH_SVC. Jalankan manual: sudo systemctl reload $SSH_SVC"
+fi
 
 # ---------- 5. generate nginx reverse proxy ----------
 info "Generate nginx reverse proxy untuk $DOMAIN ..."
